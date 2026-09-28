@@ -1,4 +1,5 @@
-FROM nvidia/cuda:13.4.1-devel-ubuntu26.04
+# 26.04 for some reason breaks tar command when building for amd64 on macos
+FROM nvidia/cuda:13.4.1-devel-ubuntu24.04 
 
 RUN apt-get update && apt-get install -y \
 	git \
@@ -72,5 +73,10 @@ ENV PATH="/home/pookie/.local/bin:$PATH"
 RUN git clone https://github.com/vossenwout/pookie-dotfiles \
 	&& cd pookie-dotfiles \
 	&& stow tmux zshrc pi neovim
+
+#nvidia smoke test
+COPY --chown=pookie:pookie scripts/cuda-smoke.sh ./cuda-smoke.sh
+RUN chmod +x ./cuda-smoke.sh
+
 
 CMD ["zsh"]
