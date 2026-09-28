@@ -1,0 +1,69 @@
+FROM vastai/base-image:cuda-13.0.3-auto
+
+RUN apt-get update && apt-get install -y \
+    stow \
+    zsh \
+    && rm -rf /var/lib/apt/lists/*
+
+# Homebrew needs a non-root install user
+RUN useradd --uid 10001 \
+    --create-home \
+    --shell /bin/bash \
+    --user-group \
+    linuxbrew
+
+USER linuxbrew
+
+RUN NONINTERACTIVE=1 /bin/bash -c \
+    "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+
+ENV PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:${PATH}"
+
+
+RUN brew install \
+    neovim \
+    fzf \
+    fd \
+    ripgrep \
+    tmux \
+    pyenv \
+    lazygit \
+    lua-language-server \
+    llvm \
+    tree-sitter-cli
+
+USER root
+
+# Pi Coding agent
+ENV NVM_DIR=/root/.nvm
+
+RUN curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.8/install.sh \
+    | PROFILE=/dev/null bash \
+    && . "$HOME/.nvm/nvm.sh" \
+    && nvm install 24 \
+    && npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+
+# oh-my-zsh
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
+    && rm -f "$HOME/.zshrc"
+
+# Python dev tools
+RUN uv tool install ty@latest \
+    && uv tool install ruff@latest \
+    && uv tool install debugpy@latest
+
+ENV PATH="/root/.local/bin:$PATH"
+
+# Dotfiles
+RUN git clone https://github.com/vossenwout/pookie-dotfiles /root/pookie-dotfiles \
+    && cd /root/pookie-dotfiles \
+    && stow tmux zshrc pi neovim
+
+# CUDA smoke test
+COPY scripts/cuda-smoke.sh /root/cuda-smoke.sh
+RUN chmod +x /root/cuda-smoke.sh
+
+WORKDIR /workspace
+
+# Keep Vast's own ENTRYPOINT and CMD

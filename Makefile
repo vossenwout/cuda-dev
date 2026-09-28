@@ -1,15 +1,19 @@
-IMAGE=ghcr.io/vossenwout/pookie-cuda-dev:latest
-PLATFORM=linux/amd64
+REGISTRY ?= ghcr.io/vossenwout/pookie-cuda-dev
+VARIANT ?= vast-container
+PLATFORM ?= linux/amd64
+IMAGE = $(REGISTRY):$(VARIANT)
 
 
 .PHONY: build shell shell-gpu login push pull
 
 build:
-	docker build --platform $(PLATFORM) -t $(IMAGE) .
+	docker build --platform $(PLATFORM) \
+		-f docker/Dockerfile.$(VARIANT) -t $(IMAGE) .
 
 shell:
 	docker run --rm -it \
 		--platform $(PLATFORM) -t \
+		--entrypoint zsh \
 		$(IMAGE)
 
 shell-gpu:
