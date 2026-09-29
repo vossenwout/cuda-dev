@@ -21,6 +21,9 @@ shell-gpu:
 		--platform $(PLATFORM) --gpus all \
 		--user root \
 		--cap-add=SYS_ADMIN \
+		-e HOME=/home/pookie \
+		-e ZDOTDIR=/home/pookie \
+		-w /home/pookie \
 		--entrypoint /bin/zsh \
 		$(IMAGE) -i
 
