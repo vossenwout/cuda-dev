@@ -10,13 +10,14 @@ build:
 	docker build --platform $(PLATFORM) \
 		-f docker/Dockerfile.$(VARIANT) -t $(IMAGE) .
 
-shell:
+shell-local-test:
 	docker run --rm -it \
 		--platform $(PLATFORM) -t \
 		--entrypoint zsh \
 		$(IMAGE)
 
-shell-gpu:
+shell-gpu-vm:
+	mkdir -p $(CURDIR)/programming
 	docker run --rm -it \
 		--platform $(PLATFORM) --gpus all \
 		--user root \
@@ -25,8 +26,9 @@ shell-gpu:
 		-e ZDOTDIR=/home/pookie \
 		-e ZSH_DISABLE_COMPFIX=true \
 		-w /home/pookie \
+		-v $(CURDIR)/programming:/home/pookie/programming \
 		--entrypoint /bin/zsh \
-		$(IMAGE) -i
+		$(REGISTRY):vast-vm -i
 
 login:
 	@set -a; . ./.env; set +a; \
