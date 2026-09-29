@@ -19,7 +19,10 @@ shell:
 shell-gpu:
 	docker run --rm -it \
 		--platform $(PLATFORM) --gpus all \
-		$(IMAGE)
+		--user root \
+		--cap-add=SYS_ADMIN \
+		--entrypoint /bin/zsh \
+		$(IMAGE) -i
 
 login:
 	@set -a; . ./.env; set +a; \
