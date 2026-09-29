@@ -66,4 +66,5 @@ RUN chmod +x /root/cuda-smoke.sh
 
 WORKDIR /workspace
 
-# Keep Vast's own ENTRYPOINT and CMD
+# Keep Vast's ENTRYPOINT
+CMD ["--no-activate-pyenv"]

@@ -27,3 +27,7 @@ make shell-gpu VARIANT=vast-vm
 ```
 
 Use `make shell` without GPU access (for example, on macOS).
+
+## VastAI connection
+For my ghostty I often need to show TERM
+TERM=xterm-256color ssh -p 20286 root@89.121.253.244 -L 8080:localhost:8080
