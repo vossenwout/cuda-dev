@@ -23,6 +23,7 @@ shell-gpu:
 		--cap-add=SYS_ADMIN \
 		-e HOME=/home/pookie \
 		-e ZDOTDIR=/home/pookie \
+		-e ZSH_DISABLE_COMPFIX=true \
 		-w /home/pookie \
 		--entrypoint /bin/zsh \
 		$(IMAGE) -i
