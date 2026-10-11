@@ -16,7 +16,9 @@ Once inside run
 
 ## Ghostty Issues
 For my ghostty I often need to show TERM
-TERM=xterm-256color ssh -p 20286 root@89.121.253.244
+
+To connect to vast-ai instance:
+`TERM=xterm-256color ssh -p 20286 root@89.121.253.244`
 
 ## How to build new image
 
