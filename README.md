@@ -2,11 +2,17 @@
 
 A docker container with my entire dev setup for easy setup on VastAI cloud GPU's.
 
-## Nsight
+## Nsight Support
 To profile gpus you need a vastAI vm (not container)
 
-Then also run
+Once in the VM run:
 `scripts/setup-docker-gpu.sh`
+
+Then execute
+`make shell-gpu-vm`
+
+Once inside run
+`scripts/cuda-smoke.sh`
 
 ## Ghostty Issues
 For my ghostty I often need to show TERM
