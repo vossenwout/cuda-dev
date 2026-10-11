@@ -12,3 +12,10 @@ mkdir -p "$LOCAL_DIR"
 rsync -av --progress -e "ssh -p ${VM_PORT}" \
   "${VM_HOST}:${VM_REPO_DIR}" \
   "${LOCAL_DIR}/"
+
+#tip: set this as a cron with:
+# 1. !if not done! give macos full-dask access permissions to usr/sbin/cron
+# 2. place this script in .sh file
+# 3. $ crontab -e
+#*/15 * * * * /Users/woutvossen/Documents/programming/diffusion-from-scratch/sync_remote.sh >> /Users/woutvossen/Documents/programming/diffusion-from-scratch/sync.log 2>&1
+# -> cron is now scheduled
